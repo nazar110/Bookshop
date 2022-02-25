@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace Bookshop.DL.Entities
 {
-    public partial class AuthorsBook
+    public partial class BooksGenres
     {
-        public int AuthorID { get; set; }
         public int BookID { get; set; }
+        public int GenreID { get; set; }
 
-        public virtual Author Author { get; set; }
         public virtual Book Book { get; set; }
+        public virtual Genre Genre { get; set; }
     }
 }

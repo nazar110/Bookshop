@@ -19,10 +19,10 @@ namespace Bookshop.DL.EF
         }
 
         public virtual DbSet<Author> Authors { get; set; }
-        public virtual DbSet<AuthorsBook> AuthorsBooks { get; set; }
+        public virtual DbSet<AuthorsBooks> AuthorsBooks { get; set; }
         public virtual DbSet<Book> Books { get; set; }
-        public virtual DbSet<BooksGenre> BooksGenres { get; set; }
-        public virtual DbSet<ClientInformation> ClientInformations { get; set; }
+        public virtual DbSet<BooksGenres> BooksGenres { get; set; }
+        public virtual DbSet<ClientInformation> ClientsInformation { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<GuestClient> GuestClients { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
@@ -60,7 +60,7 @@ namespace Bookshop.DL.EF
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<AuthorsBook>(entity =>
+            modelBuilder.Entity<AuthorsBooks>(entity =>
             {
                 entity.HasKey(e => new { e.AuthorID, e.BookID })
                     .HasName("PK__AuthorsB__1304F036FBF6F34A");
@@ -101,7 +101,7 @@ namespace Bookshop.DL.EF
                 entity.Property(e => e.Weight).HasColumnType("numeric(19, 0)");
             });
 
-            modelBuilder.Entity<BooksGenre>(entity =>
+            modelBuilder.Entity<BooksGenres>(entity =>
             {
                 entity.HasKey(e => new { e.BookID, e.GenreID })
                     .HasName("PK__BooksGen__CDD89272C3DCC380");

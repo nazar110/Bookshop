@@ -9,8 +9,8 @@ namespace Bookshop.DL.Entities
     {
         public Book()
         {
-            AuthorsBooks = new HashSet<AuthorsBook>();
-            BooksGenres = new HashSet<BooksGenre>();
+            AuthorsBooks = new HashSet<AuthorsBooks>();
+            BooksGenres = new HashSet<BooksGenres>();
             OrderItems = new HashSet<OrderItem>();
         }
 
@@ -23,8 +23,8 @@ namespace Bookshop.DL.Entities
         public string PublisherName { get; set; }
         public decimal? Weight { get; set; }
 
-        public virtual ICollection<AuthorsBook> AuthorsBooks { get; set; }
-        public virtual ICollection<BooksGenre> BooksGenres { get; set; }
+        public virtual ICollection<AuthorsBooks> AuthorsBooks { get; set; }
+        public virtual ICollection<BooksGenres> BooksGenres { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }
