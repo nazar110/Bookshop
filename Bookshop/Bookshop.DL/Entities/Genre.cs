@@ -9,12 +9,12 @@ namespace Bookshop.DL.Entities
     {
         public Genre()
         {
-            BooksGenres = new HashSet<BooksGenre>();
+            BooksGenres = new HashSet<BooksGenres>();
         }
 
         public int ID { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<BooksGenre> BooksGenres { get; set; }
+        public virtual ICollection<BooksGenres> BooksGenres { get; set; }
     }
 }

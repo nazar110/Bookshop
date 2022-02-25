@@ -9,7 +9,7 @@ namespace Bookshop.DL.Entities
     {
         public Author()
         {
-            AuthorsBooks = new HashSet<AuthorsBook>();
+            AuthorsBooks = new HashSet<AuthorsBooks>();
         }
 
         public int ID { get; set; }
@@ -17,6 +17,6 @@ namespace Bookshop.DL.Entities
         public string Surname { get; set; }
         public string About { get; set; }
 
-        public virtual ICollection<AuthorsBook> AuthorsBooks { get; set; }
+        public virtual ICollection<AuthorsBooks> AuthorsBooks { get; set; }
     }
 }
