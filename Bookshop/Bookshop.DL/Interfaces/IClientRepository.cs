@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Bookshop.DL.Interfaces
 {
-    public interface IGuestClientRepository : IDisposable
+    public interface IClientRepository : IDisposable
     {
-        IEnumerable<GuestClient> GetGuestClients();
-        GuestClient GetGuestClient(int id);
-        void Create(GuestClient item);
-        void Update(GuestClient item);
+        IEnumerable<Client> GetSignedUpClients();
+        Client GetSignedUpClient(int id);
+        void Create(Client item);
+        void Update(Client item);
         void Delete(int id);
         void Save();
     }

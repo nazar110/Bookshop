@@ -10,27 +10,27 @@ using System.Threading.Tasks;
 
 namespace Bookshop.DL.Repositories
 {
-    class SignedUpClientRepository : IRepository<SignedUpClient>
+    class ClientRepository : IRepository<Client>
     {
         private BookshopContext db;
 
-        public SignedUpClientRepository()
+        public ClientRepository()
         {
             this.db = new BookshopContext();
         }
-        public SignedUpClientRepository(BookshopContext context)
+        public ClientRepository(BookshopContext context)
         {
             this.db = context;
         }
-        public void Create(SignedUpClient signedUpClient)
+        public void Create(Client client)
         {
-            db.SignedUpClients.Add(signedUpClient);
+            db.Clients.Add(client);
         }
         public void Delete(int id)
         {
-            SignedUpClient guestClient = db.SignedUpClients.Find(id);
+            Client guestClient = db.Clients.Find(id);
             if (guestClient != null)
-                db.SignedUpClients.Remove(guestClient);
+                db.Clients.Remove(guestClient);
         }
 
         public void Save()
@@ -58,19 +58,19 @@ namespace Bookshop.DL.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<SignedUpClient> GetAll()
+        public IEnumerable<Client> GetAll()
         {
-            return db.SignedUpClients.ToList();
+            return db.Clients.ToList();
         }
 
-        public SignedUpClient GetItem(int id)
+        public Client GetItem(int id)
         {
-            return db.SignedUpClients.Find(id);
+            return db.Clients.Find(id);
         }
 
-        public void Update(SignedUpClient signedUpClient)
+        public void Update(Client client)
         {
-            db.Entry(signedUpClient).State = EntityState.Modified;
+            db.Entry(client).State = EntityState.Modified;
         }
     }
 }

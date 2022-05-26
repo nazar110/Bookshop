@@ -1,8 +1,12 @@
 using Bookshop.BL.Services;
+using Bookshop.DL.EF;
+using Bookshop.DL.Interfaces;
+using Bookshop.DL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,6 +39,14 @@ namespace Bookshop.API
             });
 
             services.AddScoped<PageSettingsService>();
+            services.AddScoped<ClientService>();
+            services.AddScoped<NotificationService>();
+            services.AddScoped<ServerlessNotificationService>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            string conStr = Configuration.GetSection("ConnectionStrings")["Database"];
+            services.AddDbContext<BookshopContext>(ctxOptBuilder =>
+            ctxOptBuilder.UseSqlServer(conStr));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
