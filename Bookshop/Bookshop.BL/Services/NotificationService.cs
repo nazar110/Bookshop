@@ -24,13 +24,13 @@ namespace Bookshop.BL.Services
                 Text = senderEmailDetails.Message
             };
 
-            using (var client2 = new SmtpClient())
+            using (var client = new SmtpClient())
             {
-                await client2.ConnectAsync("smtp.gmail.com", 465, true);
-                await client2.AuthenticateAsync(senderEmailDetails.SenderEmail, senderEmailDetails.SenderPassword);
-                await client2.SendAsync(emailMessage);
+                await client.ConnectAsync("smtp.gmail.com", 465, true);
+                await client.AuthenticateAsync(senderEmailDetails.SenderEmail, senderEmailDetails.SenderPassword);
+                await client.SendAsync(emailMessage);
 
-                await client2.DisconnectAsync(true);
+                await client.DisconnectAsync(true);
             }
         }
 

@@ -61,11 +61,13 @@ namespace Bookshop.API.Controllers
         [HttpGet("/signin")]
         public ActionResult<ClientReadDto> SignIn(ClientCreateDto client)
         {
+            _clientService.SignUp(client);
             return Ok();
         }
         [HttpGet("/signout")]
         public ActionResult<ClientReadDto> SignOut(ClientCreateDto client)
         {
+            _clientService.SignOut(client);
             return Ok();
         }
     }

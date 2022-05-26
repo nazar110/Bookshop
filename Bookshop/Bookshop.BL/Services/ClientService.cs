@@ -17,7 +17,9 @@ namespace Bookshop.BL.Services
         {
             _uow = uow;
         }
-        /// <returns>ID of added client</returns>
+        /// <returns>
+        /// ID of added client
+        /// </returns>
         public int? SignUp(ClientCreateDto client)
         {
             Client signedUpClient = new Client()
@@ -34,6 +36,14 @@ namespace Bookshop.BL.Services
             //_context.SaveChanges();
             int? idOfAddedClient = _uow.Clients.GetAll().Last()?.ID;
             return idOfAddedClient;
+        }
+        public bool SignIn(ClientCreateDto client)
+        {
+            return true;
+        }
+        public void SignOut(ClientCreateDto client)
+        {
+
         }
     }
 }

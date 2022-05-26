@@ -10,9 +10,8 @@ namespace Bookshop.BL.Services
 {
     public class PageSettingsService
     {
-        // public PageViewModel PageViewModel { get; set; }
-        public IEnumerable<Book> BooksDetails { get; set; } = new List<Book>() {
-        new Book()
+        public List<BookDto> BooksDetails { get; set; } = new List<BookDto>() {
+        new BookDto()
         {
             Title = "Mere Christianity",
             PublicationYear = 2019,
@@ -20,7 +19,7 @@ namespace Bookshop.BL.Services
             AuthorSurname = "Lewis",
             Price = 200,
         },
-        new Book()
+        new BookDto()
         {
             Title = "Kobzar",
             PublicationYear = 2015,
@@ -28,7 +27,7 @@ namespace Bookshop.BL.Services
             AuthorSurname = "Shevchenko",
             Price = 300,
         },
-        new Book()
+        new BookDto()
         {
             Title = "Tyhrolovy",
             PublicationYear = 2014,
@@ -37,8 +36,7 @@ namespace Bookshop.BL.Services
             Price = 240,
         }
         };
-        // Pass to methods second parameter List<Book> requestedBooks
-        public List<Book> NextPage(int pageNum, int numberOfItemsPerPage, List<Book> requestedBooks)
+        public List<BookDto> NextPage(int pageNum, int numberOfItemsPerPage, List<BookDto> requestedBooks)
         {
             // int pageSize = 2;
             // var count = requestedBooks.Count();
@@ -48,9 +46,9 @@ namespace Bookshop.BL.Services
             //bool nextPageExists = pageNum < totalPages;
             return items;
         }
-        public List<Book> SortBooksBy(string parameter)
+        public List<BookDto> SortBooksBy(string parameter)
         {
-            List<Book> items;
+            List<BookDto> items;
             if (parameter == OrderParameter.AuthorName)
             {
                 items = BooksDetails.OrderBy(b => b.AuthorName).ToList();
@@ -69,20 +67,21 @@ namespace Bookshop.BL.Services
             }
             return items;
         }
-        public List<Book> FilterBooksBy(string parameter)
+        public List<BookDto> FilterBooksBy(string parameter)
         {
-            List<Book> items = BooksDetails.Where(b => $"{b.AuthorName} {b.AuthorSurname}" == parameter 
+            List<BookDto> items = BooksDetails.Where(b => $"{b.AuthorName} {b.AuthorSurname}" == parameter 
             || b.Title == parameter).ToList();
             return items;
         }
-        public List<Book> SearchBooksBy(string phraseForSearch)
+        public List<BookDto> SearchBooksBy(string phraseForSearch)
         {
-            List<Book> items = BooksDetails.Where(b => b.AuthorName.Contains(phraseForSearch) ||
+            List<BookDto> items = BooksDetails.Where(b => b.AuthorName.Contains(phraseForSearch) ||
             $"{b.AuthorName} {b.AuthorSurname}".Contains(phraseForSearch) ||
             b.AuthorSurname.Contains(phraseForSearch) || b.Title.Contains(phraseForSearch)).ToList();
             return items;
         }
-        public List<Book> Configure(int pageNum, int numberOfItemsPerPage, string orderParam, string filterParam, string phraseForSearch)
+        public List<BookDto> Configure(int pageNum, int numberOfItemsPerPage, string orderParam, 
+            string filterParam, string phraseForSearch)
         {
             //Int32.TryParse(pageValue.ToString(), out int pageNum);
             //string orderParam = orderValue.ToString();
@@ -93,7 +92,7 @@ namespace Bookshop.BL.Services
             //    pageNum = 1;
             //}
 
-            List<Book> requestedBooks = BooksDetails.ToList();
+            List<BookDto> requestedBooks = BooksDetails.ToList();
             if (!string.IsNullOrEmpty(orderParam))
             {
                 requestedBooks = SortBooksBy(orderParam);

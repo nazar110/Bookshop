@@ -38,10 +38,20 @@ namespace Bookshop.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bookshop.API", Version = "v1" });
             });
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddScoped<PageSettingsService>();
             services.AddScoped<ClientService>();
             services.AddScoped<NotificationService>();
             services.AddScoped<ServerlessNotificationService>();
+            services.AddScoped<BookService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             string conStr = Configuration.GetSection("ConnectionStrings")["Database"];
@@ -69,6 +79,8 @@ namespace Bookshop.API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSession();
         }
     }
 }
