@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bookshop.BL.Models
 {
-    public class Book
+    public class BookDto
     {
         public string Title { get; set; }
         public int PublicationYear { get; set; }

@@ -16,14 +16,16 @@ namespace Bookshop.API.Controllers
     {
         private readonly ILogger<BooksController> _logger;
         private readonly PageSettingsService _pageSettingsService;
-        public BooksController(ILogger<BooksController> logger, PageSettingsService pageSettingsService)
+        private readonly BookService _bookService;
+        public BooksController(ILogger<BooksController> logger, PageSettingsService pageSettingsService, BookService bookService)
         {
             _logger = logger;
             _pageSettingsService = pageSettingsService;
+            _bookService = bookService;
         }
 
         [HttpGet("/books")]
-        public ActionResult<List<Book>> GetBooks()
+        public ActionResult<List<BookDto>> GetBooks()
         {
             HttpContext.Request.Query.TryGetValue("pageNum", out StringValues pageValue);
             HttpContext.Request.Query.TryGetValue("orderBy", out StringValues orderValue);
@@ -33,36 +35,20 @@ namespace Bookshop.API.Controllers
             string orderParam = orderValue.ToString();
             string filterParam = filterValue.ToString();
             string phraseForSearch = phraseForSearchValue.ToString();
-            //if (pageNum <= 0)
-            //{
-            //    return BadRequest();
-            //}
-            //List<Book> requestedBooks = null;
-            //if (!string.IsNullOrEmpty(orderParam))
-            //{
-            //    requestedBooks = _pageSettingsService.SortBooksBy(orderParam);
-            //}
-            //if (!string.IsNullOrEmpty(filterParam))
-            //{
-            //    requestedBooks = _pageSettingsService.FilterBooksBy(filterParam);
-            //    pageNum = 1;
-            //}
-            ////if (requestedBooks != null)
-            ////{
-            //requestedBooks = _pageSettingsService.NextPage(pageNum, requestedBooks);
-            ////}
-            List<Book> requestedBooks = _pageSettingsService.Configure(pageNum, 2, orderParam, filterParam, phraseForSearch);
+            _pageSettingsService.BooksDetails = _bookService.GetAll();
+            List<BookDto> requestedBooks = _pageSettingsService.Configure(pageNum, 2, orderParam, filterParam, phraseForSearch);
             if (requestedBooks == null)
             {
                 return BadRequest();
             }
 
-            return Ok(requestedBooks); // Ok(_pageSettingsService.NextPage(pageNum));
+            return Ok(requestedBooks);
         }
         [HttpGet("/books/{id}")]
-        public ActionResult<List<Book>> GetBookBy(int id)
+        public ActionResult<List<BookDto>> GetBookBy(int id)
         {
-            return Ok();
+            BookDto bookDto = _bookService.GetBy(id);
+            return Ok(bookDto);
         }
     }
 }

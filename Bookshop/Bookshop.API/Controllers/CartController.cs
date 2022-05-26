@@ -1,7 +1,12 @@
-﻿using Bookshop.BL.Models;
+﻿using Bookshop.BL.DTOs;
+using Bookshop.BL.Models;
+using Bookshop.BL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Bookshop.API.Controllers
 {
@@ -9,19 +14,58 @@ namespace Bookshop.API.Controllers
     [ApiController]
     public class CartController : ControllerBase
     {
-        [HttpPost("/add/{id}")]
-        public ActionResult<List<Book>> AddToCart(int id)
+        private readonly ILogger<BooksController> _logger;
+        public CartController(ILogger<BooksController> logger)
         {
+            _logger = logger;
+        }
+        [HttpGet()]
+        public ActionResult<List<OrderItemDto>> SeeCart()
+        {
+            if (HttpContext.Session.Keys.Contains("cart"))
+            {
+                List<BookDto> books = JsonConvert.DeserializeObject<List<BookDto>>(HttpContext.Session.GetString("cart"));
+                return Ok(books);
+            }
+            return Ok();
+        }
+        [HttpPost("/add/{id}")]
+        public ActionResult<List<BookDto>> AddToCart(BookDto book)
+        {
+            if (HttpContext.Session.Keys.Contains("cart"))
+            {
+                List<BookDto> books = JsonConvert.DeserializeObject<List<BookDto>>(HttpContext.Session.GetString("cart"));
+                books.Add(book);
+                string serializedBooks = JsonConvert.SerializeObject(books);
+                HttpContext.Session.SetString("cart", serializedBooks);
+            }
+            else
+            {
+                string serializedBooks = JsonConvert.SerializeObject(new List<BookDto>() { book} );
+                HttpContext.Session.SetString("cart", serializedBooks);
+            }
             return Ok();
         }
         [HttpDelete("/remove/{id}")]
-        public ActionResult<List<Book>> DeleteFromCart(int id)
+        public ActionResult<List<BookDto>> DeleteFromCart(BookDto book)
         {
+            if (HttpContext.Session.Keys.Contains("cart"))
+            {
+                List<BookDto> books = JsonConvert.DeserializeObject<List<BookDto>>(HttpContext.Session.GetString("cart"));
+                books.Remove(book);
+                string serializedBooks = JsonConvert.SerializeObject(books);
+                HttpContext.Session.SetString("cart", serializedBooks);
+            }
             return Ok();
         }
         [HttpPost("/confirm")]
-        public ActionResult<List<Book>> ConfirmOrder()
+        public ActionResult<List<BookDto>> ConfirmOrder()
         {
+            if (HttpContext.Session.Keys.Contains("cart"))
+            {
+                List<BookDto> books = JsonConvert.DeserializeObject<List<BookDto>>(HttpContext.Session.GetString("cart"));
+                return Ok(books);
+            }
             return Ok();
         }
     }
