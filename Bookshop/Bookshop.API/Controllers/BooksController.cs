@@ -59,5 +59,10 @@ namespace Bookshop.API.Controllers
 
             return Ok(requestedBooks); // Ok(_pageSettingsService.NextPage(pageNum));
         }
+        [HttpGet("/books/{id}")]
+        public ActionResult<List<Book>> GetBookBy(int id)
+        {
+            return Ok();
+        }
     }
 }
