@@ -58,5 +58,15 @@ namespace Bookshop.API.Controllers
                     });
             }
         }
+        [HttpGet("/signin")]
+        public ActionResult<ClientReadDto> SignIn(ClientCreateDto client)
+        {
+            return Ok();
+        }
+        [HttpGet("/signout")]
+        public ActionResult<ClientReadDto> SignOut(ClientCreateDto client)
+        {
+            return Ok();
+        }
     }
 }
