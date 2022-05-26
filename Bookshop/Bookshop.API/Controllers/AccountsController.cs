@@ -29,15 +29,25 @@ namespace Bookshop.API.Controllers
             {
                 int? idOfAddedAccount = _clientService.SignUp(client);
                 _logger.LogInformation($"Added new cliend with ID {idOfAddedAccount}");
-                ClientReadDto signedUpclient = new ClientReadDto()
+                ClientReadDto signedUpClient = new ClientReadDto()
                 {
                     Name = client.Name,
                     Surname = client.Surname,
                     Email = client.Email,
                     Number = client.Number,
                 };
-
-                return Ok(signedUpclient);
+                BL.Models.SenderEmailDetails senderEmailDetails = new BL.Models.SenderEmailDetails()
+                {
+                    SenderEmail = "course.project.bookstore@gmail.com",
+                    SenderPassword = "dcthtlevu",
+                    RecipientEmail = signedUpClient.Email,
+                    Subject = "Tom from Bookshop",
+                    Message = $"Hi, {signedUpClient.Name} {signedUpClient.Surname}! You were signed up successfully."
+                };
+                //_notificationService.Send(senderEmailDetails);
+                senderEmailDetails.Subject = "Tom from Bookshop (Serverless)";
+                _serverlessNotificatiohService.Send(senderEmailDetails);
+                return Ok(signedUpClient);
             }
             catch (System.Exception ex)
             {
