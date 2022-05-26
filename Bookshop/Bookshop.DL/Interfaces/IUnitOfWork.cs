@@ -13,9 +13,7 @@ namespace Bookshop.DL.Interfaces
         public IRepository<BooksGenres> BooksGenres { get; }
         public IRepository<Genre> Genres { get; }
         public IRepository<Order> Orders { get; }
-        public IRepository<ClientInformation> ClientsInformation { get; }
-        public IRepository<GuestClient> GuestClients { get; }
-        public IRepository<SignedUpClient> SignedUpClients { get; }
+        public IRepository<Client> Clients { get; }
         public IRepository<OrderItem> OrderItems { get; }
         public void Save();
 

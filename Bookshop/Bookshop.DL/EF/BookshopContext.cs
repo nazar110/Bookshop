@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Bookshop.DL.Entities;
+using Bookshop.DL.Helpers;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -11,29 +13,39 @@ namespace Bookshop.DL.EF
     {
         public BookshopContext()
         {
-        }
 
+        }
         public BookshopContext(DbContextOptions<BookshopContext> options)
             : base(options)
         {
+            //bool newlyCreated = Database.EnsureCreated();
+            //if (newlyCreated)
+            //{
+            //    try
+            //    {
+            //        SeedData.SeedAuthorsAndTheirBooks(this);
+            //    }
+            //    catch (Exception)
+            //    {
+            //        Console.WriteLine("ERROR. Failed to seed data for authors and their books");
+            //    }
+            //}
         }
 
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<AuthorsBooks> AuthorsBooks { get; set; }
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<BooksGenres> BooksGenres { get; set; }
-        public virtual DbSet<ClientInformation> ClientsInformation { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
-        public virtual DbSet<GuestClient> GuestClients { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
-        public virtual DbSet<SignedUpClient> SignedUpClients { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=bookshopdb;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=<servername>;Database=bookshopDB;Trusted_Connection=True;");
             }
         }
 
@@ -45,7 +57,7 @@ namespace Bookshop.DL.EF
             {
                 entity.ToTable("Author");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.ID).UseIdentityColumn();
 
                 entity.Property(e => e.About)
                     .HasMaxLength(255)
@@ -62,8 +74,7 @@ namespace Bookshop.DL.EF
 
             modelBuilder.Entity<AuthorsBooks>(entity =>
             {
-                entity.HasKey(e => new { e.AuthorID, e.BookID })
-                    .HasName("PK__AuthorsB__1304F036FBF6F34A");
+                entity.HasKey(e => new { e.AuthorID, e.BookID });
 
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.AuthorsBooks)
@@ -82,7 +93,7 @@ namespace Bookshop.DL.EF
             {
                 entity.ToTable("Book");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.ID).UseIdentityColumn();
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
@@ -103,8 +114,7 @@ namespace Bookshop.DL.EF
 
             modelBuilder.Entity<BooksGenres>(entity =>
             {
-                entity.HasKey(e => new { e.BookID, e.GenreID })
-                    .HasName("PK__BooksGen__CDD89272C3DCC380");
+                entity.HasKey(e => new { e.BookID, e.GenreID });
 
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.BooksGenres)
@@ -119,71 +129,31 @@ namespace Bookshop.DL.EF
                     .HasConstraintName("FK_BooksGenres.GenreID");
             });
 
-            modelBuilder.Entity<ClientInformation>(entity =>
-            {
-                entity.ToTable("ClientInformation");
-
-                entity.Property(e => e.ID).ValueGeneratedNever();
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Number)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Surname)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-            });
-
             modelBuilder.Entity<Genre>(entity =>
             {
                 entity.ToTable("Genre");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.ID).UseIdentityColumn();
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<GuestClient>(entity =>
-            {
-                entity.ToTable("GuestClient");
-
-                entity.Property(e => e.ID).ValueGeneratedNever();
-
-                entity.HasOne(d => d.ClientInformation)
-                    .WithMany(p => p.GuestClients)
-                    .HasForeignKey(d => d.ClientInformationID)
-                    .HasConstraintName("FK_GuestClient.ClientInformationID");
             });
 
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.ToTable("Order");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.ID).UseIdentityColumn();
 
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
-
-                entity.HasOne(d => d.ClientInformation)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.ClientInformationID)
-                    .HasConstraintName("FK_Order.ClientInformationID");
             });
 
             modelBuilder.Entity<OrderItem>(entity =>
             {
                 entity.ToTable("OrderItem");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.ID).UseIdentityColumn();
 
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.OrderItems)
@@ -196,25 +166,49 @@ namespace Bookshop.DL.EF
                     .HasConstraintName("FK_OrderItem.OrderID");
             });
 
-            modelBuilder.Entity<SignedUpClient>(entity =>
+            modelBuilder.Entity<Client>(entity =>
             {
-                entity.ToTable("SignedUpClient");
+                entity.ToTable("Client");
 
-                entity.Property(e => e.ID).ValueGeneratedNever();
+                entity.Property(e => e.ID).UseIdentityColumn();
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Surname)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Number)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.ClientInformation)
-                    .WithMany(p => p.SignedUpClients)
-                    .HasForeignKey(d => d.ClientInformationID)
-                    .HasConstraintName("FK_SignedUpClient.ClientInformationID");
             });
 
-            OnModelCreatingPartial(modelBuilder);
-        }
+            modelBuilder.Entity<ClientsOrders>(entity =>
+            {
+                entity.HasKey(e => new { e.ClientID, e.OrderID });
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.ClientsOrders)
+                    .HasForeignKey(d => d.ClientID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClientsOrders.ClientID");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.ClientsOrders)
+                    .HasForeignKey(d => d.OrderID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClientsOrders.OrderID");
+            });
+        }
     }
 }

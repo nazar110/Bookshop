@@ -17,9 +17,7 @@ namespace Bookshop.DL.Repositories
         private GenreRepository genreRepository;
         private OrderRepository orderRepository;
         private OrderItemRepository orderItemRepository;
-        private ClientInformationRepository clientInformationRepository;
-        private GuestClientRepository guestClientRepository;
-        private SignedUpClientRepository signedUpClientRepository;
+        private ClientRepository clientRepository;
         
         public IRepository<Author> Authors
         {
@@ -85,33 +83,13 @@ namespace Bookshop.DL.Repositories
             }
         }
 
-        public IRepository<ClientInformation> ClientsInformation
+        public IRepository<Client> Clients
         {
             get
             {
-                if (clientInformationRepository == null)
-                    clientInformationRepository = new ClientInformationRepository(db);
-                return clientInformationRepository;
-            }
-        }
-
-        public IRepository<GuestClient> GuestClients
-        {
-            get
-            {
-                if (guestClientRepository == null)
-                    guestClientRepository = new GuestClientRepository(db);
-                return guestClientRepository;
-            }
-        }
-
-        public IRepository<SignedUpClient> SignedUpClients
-        {
-            get
-            {
-                if (signedUpClientRepository == null)
-                    signedUpClientRepository = new SignedUpClientRepository(db);
-                return signedUpClientRepository;
+                if (clientRepository == null)
+                    clientRepository = new ClientRepository(db);
+                return clientRepository;
             }
         }
 

@@ -10,7 +10,7 @@ namespace Bookshop.DL.Entities
         public int BookID { get; set; }
         public int GenreID { get; set; }
 
-        public virtual Book Book { get; set; }
-        public virtual Genre Genre { get; set; }
+        public Book Book { get; set; }
+        public Genre Genre { get; set; }
     }
 }

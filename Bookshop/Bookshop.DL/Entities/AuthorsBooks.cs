@@ -10,7 +10,7 @@ namespace Bookshop.DL.Entities
         public int AuthorID { get; set; }
         public int BookID { get; set; }
 
-        public virtual Author Author { get; set; }
-        public virtual Book Book { get; set; }
+        public Author Author { get; set; }
+        public Book Book { get; set; }
     }
 }
