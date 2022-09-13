@@ -19,7 +19,7 @@ namespace Bookshop.API.Controllers
         {
             _logger = logger;
         }
-        [HttpGet()]
+        [HttpGet("/cart")]
         public ActionResult<List<OrderItemDto>> SeeCart()
         {
             if (HttpContext.Session.Keys.Contains("cart"))
@@ -29,7 +29,7 @@ namespace Bookshop.API.Controllers
             }
             return Ok();
         }
-        [HttpPost("/add/{id}")]
+        [HttpPost("/cart/add/{id}")]
         public ActionResult<List<BookDto>> AddToCart(BookDto book)
         {
             if (HttpContext.Session.Keys.Contains("cart"))
@@ -46,7 +46,7 @@ namespace Bookshop.API.Controllers
             }
             return Ok();
         }
-        [HttpDelete("/remove/{id}")]
+        [HttpDelete("/cart/remove/{id}")]
         public ActionResult<List<BookDto>> DeleteFromCart(BookDto book)
         {
             if (HttpContext.Session.Keys.Contains("cart"))
@@ -58,7 +58,7 @@ namespace Bookshop.API.Controllers
             }
             return Ok();
         }
-        [HttpPost("/confirm")]
+        [HttpPost("/cart/confirm")]
         public ActionResult<List<BookDto>> ConfirmOrder()
         {
             if (HttpContext.Session.Keys.Contains("cart"))

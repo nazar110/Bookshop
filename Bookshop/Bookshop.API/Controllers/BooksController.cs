@@ -48,6 +48,10 @@ namespace Bookshop.API.Controllers
         public ActionResult<List<BookDto>> GetBookBy(int id)
         {
             BookDto bookDto = _bookService.GetBy(id);
+            if (bookDto == null)
+            {
+                return NotFound();
+            }
             return Ok(bookDto);
         }
     }
