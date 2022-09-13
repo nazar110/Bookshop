@@ -32,8 +32,7 @@ namespace Bookshop.BL.Services
             };
             _uow.Clients.Create(signedUpClient);
             _uow.Save();
-            //_context.Clients.Add(signedUpClient);
-            //_context.SaveChanges();
+
             int? idOfAddedClient = _uow.Clients.GetAll().Last()?.ID;
             return idOfAddedClient;
         }
@@ -42,6 +41,14 @@ namespace Bookshop.BL.Services
             return true;
         }
         public void SignOut(ClientCreateDto client)
+        {
+
+        }
+        public void Remove(ClientCreateDto client)
+        {
+
+        }
+        public void ChangePassword(ClientCreateDto client)
         {
 
         }

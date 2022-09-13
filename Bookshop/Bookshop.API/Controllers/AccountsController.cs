@@ -22,13 +22,13 @@ namespace Bookshop.API.Controllers
             _notificationService = notificationService;
             _serverlessNotificatiohService = serverlessNotificatiohService;
         }
-        [HttpPost("/signup")]
+        [HttpPost("/accounts/signup")]
         public ActionResult<ClientReadDto> SignUp(ClientCreateDto client)
         {
             try
             {
                 int? idOfAddedAccount = _clientService.SignUp(client);
-                _logger.LogInformation($"Added new cliend with ID {idOfAddedAccount}");
+                _logger.LogInformation($"Added new client with ID {idOfAddedAccount}");
                 ClientReadDto signedUpClient = new ClientReadDto()
                 {
                     Name = client.Name,
@@ -36,17 +36,7 @@ namespace Bookshop.API.Controllers
                     Email = client.Email,
                     Number = client.Number,
                 };
-                BL.Models.SenderEmailDetails senderEmailDetails = new BL.Models.SenderEmailDetails()
-                {
-                    SenderEmail = "course.project.bookstore@gmail.com",
-                    SenderPassword = "dcthtlevu",
-                    RecipientEmail = signedUpClient.Email,
-                    Subject = "Tom from Bookshop",
-                    Message = $"Hi, {signedUpClient.Name} {signedUpClient.Surname}! You were signed up successfully."
-                };
-                //_notificationService.Send(senderEmailDetails);
-                senderEmailDetails.Subject = "Tom from Bookshop (Serverless)";
-                _serverlessNotificatiohService.Send(senderEmailDetails);
+
                 return Ok(signedUpClient);
             }
             catch (System.Exception ex)
@@ -58,16 +48,30 @@ namespace Bookshop.API.Controllers
                     });
             }
         }
-        [HttpGet("/signin")]
+        [HttpGet("/accounts/signin")]
         public ActionResult<ClientReadDto> SignIn(ClientCreateDto client)
         {
-            _clientService.SignUp(client);
+            _clientService.SignIn(client);
             return Ok();
         }
-        [HttpGet("/signout")]
+        [HttpGet("/accounts/signout")]
         public ActionResult<ClientReadDto> SignOut(ClientCreateDto client)
         {
             _clientService.SignOut(client);
+            return Ok();
+        }
+
+        [HttpGet("/accounts/remove")]
+        public ActionResult<ClientReadDto> RemoveAccount(ClientCreateDto client)
+        {
+            _clientService.Remove(client);
+            return Ok();
+        }
+
+        [HttpGet("/accounts/change_password")]
+        public ActionResult<ClientReadDto> ChangePassword(ClientCreateDto client)
+        {
+            _clientService.ChangePassword(client);
             return Ok();
         }
     }
