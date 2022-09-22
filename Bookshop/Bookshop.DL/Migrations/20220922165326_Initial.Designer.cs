@@ -10,56 +10,54 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookshop.DL.Migrations
 {
     [DbContext(typeof(BookshopContext))]
-    [Migration("20220526001749_Initial")]
+    [Migration("20220922165326_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Bookshop.DL.Entities.Author", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("About")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
-                    b.ToTable("Author");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.AuthorsBooks", b =>
                 {
+                    b.Property<int>("Key")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("AuthorID")
                         .HasColumnType("int");
 
                     b.Property<int>("BookID")
                         .HasColumnType("int");
 
-                    b.HasKey("AuthorID", "BookID");
+                    b.HasKey("Key");
+
+                    b.HasIndex("AuthorID");
 
                     b.HasIndex("BookID");
 
@@ -71,51 +69,51 @@ namespace Bookshop.DL.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("NumOfPages")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Price")
-                        .HasColumnType("numeric(19,0)");
+                        .HasColumnType("decimal(10,10)");
 
                     b.Property<int?>("PublicationYear")
                         .HasColumnType("int");
 
                     b.Property<string>("PublisherName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Weight")
-                        .HasColumnType("numeric(19,0)");
+                        .HasColumnType("decimal(10,10)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Book");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.BooksGenres", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("BookID")
                         .HasColumnType("int");
 
                     b.Property<int>("GenreID")
                         .HasColumnType("int");
 
-                    b.HasKey("BookID", "GenreID");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookID");
 
                     b.HasIndex("GenreID");
 
@@ -127,53 +125,26 @@ namespace Bookshop.DL.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Client");
-                });
-
-            modelBuilder.Entity("Bookshop.DL.Entities.ClientsOrders", b =>
-                {
-                    b.Property<int>("ClientID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ClientID", "OrderID");
-
-                    b.HasIndex("OrderID");
-
-                    b.ToTable("ClientsOrders");
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.Genre", b =>
@@ -181,18 +152,14 @@ namespace Bookshop.DL.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.Order", b =>
@@ -200,16 +167,19 @@ namespace Bookshop.DL.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Order");
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.OrderItem", b =>
@@ -217,26 +187,24 @@ namespace Bookshop.DL.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookID")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderID")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BookID");
+                    b.HasIndex("BookId");
 
-                    b.HasIndex("OrderID");
+                    b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.AuthorsBooks", b =>
@@ -244,13 +212,13 @@ namespace Bookshop.DL.Migrations
                     b.HasOne("Bookshop.DL.Entities.Author", "Author")
                         .WithMany("AuthorsBooks")
                         .HasForeignKey("AuthorID")
-                        .HasConstraintName("FK_AuthorsBooks.AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Bookshop.DL.Entities.Book", "Book")
                         .WithMany("AuthorsBooks")
                         .HasForeignKey("BookID")
-                        .HasConstraintName("FK_AuthorsBooks.BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -263,13 +231,13 @@ namespace Bookshop.DL.Migrations
                     b.HasOne("Bookshop.DL.Entities.Book", "Book")
                         .WithMany("BooksGenres")
                         .HasForeignKey("BookID")
-                        .HasConstraintName("FK_BooksGenres.BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Bookshop.DL.Entities.Genre", "Genre")
                         .WithMany("BooksGenres")
                         .HasForeignKey("GenreID")
-                        .HasConstraintName("FK_BooksGenres.GenreID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Book");
@@ -277,36 +245,30 @@ namespace Bookshop.DL.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("Bookshop.DL.Entities.ClientsOrders", b =>
+            modelBuilder.Entity("Bookshop.DL.Entities.Order", b =>
                 {
                     b.HasOne("Bookshop.DL.Entities.Client", "Client")
-                        .WithMany("ClientsOrders")
-                        .HasForeignKey("ClientID")
-                        .HasConstraintName("FK_ClientsOrders.ClientID")
-                        .IsRequired();
-
-                    b.HasOne("Bookshop.DL.Entities.Order", "Order")
-                        .WithMany("ClientsOrders")
-                        .HasForeignKey("OrderID")
-                        .HasConstraintName("FK_ClientsOrders.OrderID")
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Client");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.OrderItem", b =>
                 {
                     b.HasOne("Bookshop.DL.Entities.Book", "Book")
                         .WithMany("OrderItems")
-                        .HasForeignKey("BookID")
-                        .HasConstraintName("FK_OrderItem.BookID");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Bookshop.DL.Entities.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderID")
-                        .HasConstraintName("FK_OrderItem.OrderID");
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
 
@@ -329,7 +291,7 @@ namespace Bookshop.DL.Migrations
 
             modelBuilder.Entity("Bookshop.DL.Entities.Client", b =>
                 {
-                    b.Navigation("ClientsOrders");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Bookshop.DL.Entities.Genre", b =>
@@ -339,9 +301,7 @@ namespace Bookshop.DL.Migrations
 
             modelBuilder.Entity("Bookshop.DL.Entities.Order", b =>
                 {
-                    b.Navigation("ClientsOrders");
-
-                    b.Navigation("OrderItems");
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
