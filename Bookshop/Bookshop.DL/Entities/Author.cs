@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-
-#nullable disable
+using System.ComponentModel.DataAnnotations;
 
 namespace Bookshop.DL.Entities
 {
     public partial class Author
     {
-        public Author()
-        {
-            AuthorsBooks = new HashSet<AuthorsBooks>();
-        }
-
-        public int ID { get; set; }
+        [Key]
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string About { get; set; }
 
-        public virtual ICollection<AuthorsBooks> AuthorsBooks { get; set; }
+        public List<AuthorsBooks> AuthorsBooks { get; set; }
     }
 }

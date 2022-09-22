@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-
-#nullable disable
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bookshop.DL.Entities
 {
-    public partial class OrderItem
+    public class OrderItem
     {
+        [Key]
         public int ID { get; set; }
-        public int? Quantity { get; set; }
-        public int? OrderID { get; set; }
-        public int? BookID { get; set; }
-
-        public virtual Book Book { get; set; }
-        public virtual Order Order { get; set; }
+        public int Quantity { get; set; }
+        [ForeignKey("OrderId")]
+        public int OrderId { get; set; }
+        public Order Order { get; set; }
+        [ForeignKey("BookId")]
+        public int BookId { get; set; }
+        public Book Book { get; set; }
     }
 }
